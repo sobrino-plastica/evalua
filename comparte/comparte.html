@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Comparte tu currículo</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+/* ===== TIPOGRAFÍA GLOBAL ===== */
+body, h1, p, button, label, .upload-btn {
+  font-family: 'Raleway', sans-serif;
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+/* ===== BODY ===== */
+body{
+  background:linear-gradient(to top,#5f0088,#8600BF);
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  color:white;
+  padding:20px;
+}
+
+/* ===== CONTENEDOR PRINCIPAL FLEX ===== */
+.container{
+  display:flex;
+  gap:40px;
+  flex-wrap:wrap; /* Permite pasar a columna en pantallas pequeñas */
+  justify-content:center;
+}
+
+/* ===== CARD ===== */
+.card{
+  background:rgba(255,255,255,.12);
+  padding:42px;
+  border-radius:20px;
+  width:360px;
+  text-align:center;
+  backdrop-filter:blur(6px);
+  box-shadow:0 20px 40px rgba(0,0,0,.25);
+  margin-bottom:20px;
+}
+
+/* ===== TITULO ===== */
+h1{
+  font-size:22px;
+  margin-bottom:30px;
+}
+
+/* ===== BOTONES ===== */
+button, .upload-btn{
+  width:100%;
+  padding:14px;
+  border-radius:12px;
+  font-size:16px;
+  font-weight:600;
+  cursor:pointer;
+  transition: transform .3s ease, box-shadow .3s ease;
+  margin-bottom:14px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:12px;
+}
+
+/* ===== BOTÓN SELECCIONAR ARCHIVO ===== */
+.upload-btn{
+  background:white;
+  color:#8600BF;
+  border:2px solid white;
+}
+
+.upload-btn:hover{
+  transform:scale(1.03);
+  box-shadow:0 10px 24px rgba(0,0,0,.25);
+}
+
+/* ===== BOTÓN SUBIR EXCEL ===== */
+.upload{
+  background:white;
+  color:#8600BF;
+  border:2px solid white;
+}
+
+.upload:hover{
+  transform:scale(1.03);
+  box-shadow:0 10px 24px rgba(0,0,0,.25);
+}
+
+/* ===== BOTÓN BIBLIOTECA ===== */
+.library{
+  background:transparent;
+  color:white;
+  border:1px solid rgba(255,255,255,.5);
+}
+
+.library:hover{
+  transform:scale(1.03);
+  box-shadow:0 8px 20px rgba(0,0,0,.2);
+}
+
+/* ===== PARÁGRAFO ESTADO ===== */
+p{
+  margin-top:10px;
+  font-size:14px;
+  min-height:18px;
+}
+
+/* INPUT OCULTO */
+input[type="file"]{
+  display:none;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .container{
+    flex-direction:column;
+    gap:20px;
+  }
+}
+/* Animación de entrada para las cards */
+.card {
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeSlideIn 0.6s ease forwards;
+}
+
+@keyframes fadeSlideIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Cascada automática según el índice de las cards */
+.card:nth-child(1) { animation-delay: 0.1s; }
+.card:nth-child(2) { animation-delay: 0.3s; }
+#fixedFooter {
+  position: fixed;      /* Fijo al viewport */
+  bottom: 0;            /* Pegado al borde inferior */
+  left: 0;
+  width: 100%;
+  text-align: center;
+  font-family: 'Raleway', sans-serif;
+  font-size: 13px;
+  color: #94a3b8;
+
+  padding: 6px 0;
+  z-index: 1000;        /* encima de todo */
+  pointer-events: none; /* no interfiere con clicks */
+}
+/* Botón cerrar en la esquina superior derecha */
+.close-btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  border: 2px solid white;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.close-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+.close-btn svg {
+  width: 95%;       /* La X ocupa casi todo el círculo */
+  height: 95%;
+  stroke: white;    /* Color de la X */
+  stroke-width: 2;  /* Delgadez de la X */
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+
+</style>
+</head>
+
+<body>
+  <button class="close-btn">
+  <svg viewBox="0 0 24 24">
+    <line x1="2" y1="2" x2="22" y2="22"/>
+<line x1="22" y1="2" x2="2" y2="22"/>
+  </svg>
+</button>
+
+<div class="container">
+
+  <!-- COL 1: SELECCIÓN Y SUBIDA -->
+  <div class="card">
+    <h1>Comparte tu currículo</h1>
+
+    <!-- INPUT REAL OCULTO -->
+    <input type="file" id="excelFile" accept=".xls,.xlsx">
+
+    <!-- BOTÓN SELECCIONAR ARCHIVO -->
+    <label for="excelFile" class="upload-btn">
+      Seleccionar Excel
+    </label>
+
+    <!-- BOTÓN SUBIR EXCEL CON SVG -->
+    <button class="upload" onclick="uploadExcel()">
+      <svg viewBox="0 0 24 24" width="28" height="28" fill="none"
+           stroke="currentColor" stroke-width="2"
+           stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+        <polyline points="17 8 12 3 7 8"/>
+        <line x1="12" y1="3" x2="12" y2="15"/>
+      </svg>
+      Subir Excel
+    </button>
+
+    <p id="msg"></p>
+  </div>
+
+  <!-- COL 2: BIBLIOTECA DE RECURSOS -->
+  <div class="card">
+    <h1>Biblioteca de Currículos</h1>
+    <button class="library" onclick="window.open('../biblioteca/biblioteca.html','_blank')">
+      Ver archivos
+    </button>
+  </div>
+
+</div>
+
+<script>
+function uploadExcel(){
+  const fileInput = document.getElementById("excelFile");
+  const file = fileInput.files[0];
+
+  if(!file){
+    alert("Selecciona un archivo Excel");
+    return;
+  }
+
+  document.getElementById("msg").innerText = "Subiendo archivo…";
+
+  const reader = new FileReader();
+  reader.onload = () => {
+    fetch("https://script.google.com/macros/s/AKfycbyYewBEx7OY6E091vsWoQJyj1KrZLOpnFLVxvu0BpeDe5aaHsMeaPU4PYJ5MSw-abGAbQ/exec", {
+      method:"POST",
+      body:new URLSearchParams({
+        file: reader.result.split(",")[1],
+        filename: file.name,
+        mimeType: file.type
+      })
+    })
+    .then(response => response.text())
+    .then(() => {
+      document.getElementById("msg").innerText = "Archivo compartido correctamente ✔";
+      fileInput.value = "";
+    })
+    .catch(() => {
+      document.getElementById("msg").innerText = "Error al subir el archivo";
+    });
+  };
+
+  reader.readAsDataURL(file);
+}
+
+// Botón cerrar en la esquina superior derecha
+document.addEventListener("DOMContentLoaded", () => {
+  const btn = document.querySelector(".close-btn");
+  btn.addEventListener("click", () => {
+    window.location.href = "../index.html"; // Ajusta la ruta a tu index de la raíz
+  });
+});
+</script>
+
+
+<footer id="fixedFooter">
+  Una herramienta pensada para docentes diseñada por José Manuel Sobrino Carrasco | Creative Commons.
+</footer>
+</body>
+</html>

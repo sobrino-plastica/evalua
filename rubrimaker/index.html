@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Generador de Prompts Educativos</title>
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+<style>
+html, body {margin:0; padding:0; height:100%; font-family:'Raleway', sans-serif; background:#f5f7fa;}
+body {display:flex; justify-content:center; align-items:center; min-height: 100vh;  /* asegura altura total */
+  position: relative;  /* contexto para footer fijo */}
+
+.container {display:flex; align-items:center; justify-content:center; width:100%;}
+
+.app {
+  position: relative;
+  width: 80%; max-width: 1000px; height: 80vh;
+  background:white; padding:30px 40px;
+  border-radius:16px; box-shadow:0 10px 30px rgba(0,0,0,0.08);
+  display:flex; flex-direction:column; box-sizing:border-box;
+  overflow:hidden;
+}
+
+h1 {margin-top:0; font-size:38px; text-align:center; margin-bottom:20px;}
+
+#excelFile {display:none;}
+.upload-btn {
+  display:inline-block; padding:25px 50px; font-size:20px; font-weight:700;
+  color:#506fff; border:2px solid #2563eb; border-radius:20px;
+  cursor:pointer; text-align:center; background:white; transition:all 0.2s;
+}
+.upload-btn:hover {background:#506fff; color:white;}
+
+#wizard {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  margin-top: 0;   /* 🔑 sin separación */
+}
+
+h2 {
+  font-size: 20px;
+  margin: 10px 0 15px 0;   /* menos aire arriba */
+  color: #5170ff;
+}
+
+#stepContent {
+  flex-grow: 1;
+  overflow-y: auto;
+  min-height: 0; /* muy importante */
+  padding-right: 10px;
+}
+#copyBtn {
+  width: 50px;
+  height: 50px;
+  border: 2px solid #c0c0c0;
+  border-radius: 8px;
+  background: #f5f5f5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  padding: 0;
+}
+
+#copyBtn:hover {
+  background: #e0e0e0;
+  border-color: #999;
+}
+
+#copyBtn svg {
+  width: 24px;
+  height: 24px;
+  stroke: #555;
+}
+
+
+.chips {display:flex; flex-direction:column; gap:10px; align-items:stretch; width:100%;}
+.chip {
+  padding:15px 20px; border-radius:12px; border:1px solid #cbd5e1;
+  background:#f8fafc; cursor:pointer; transition:all 0.2s; font-size:18px;
+  width:100%; box-sizing:border-box; text-align:left;
+}
+.chip:hover {background:#e2e8f0;}
+.chip.active {background:#506fff; color:white; border-color:#2563eb; font-weight:600;}
+
+textarea {width:100%; height:140px; padding:12px; font-family:'Raleway', sans-serif; font-size:14px; border-radius:10px; border:1px solid #cbd5e1; box-sizing:border-box; resize:none;}
+
+#resetBtn {
+  position:absolute; top:15px; right:15px; width:36px; height:36px; border-radius:50%;
+  border:2px solid #a1a1aa; background:#f5f5f5; display:flex; justify-content:center; align-items:center;
+  cursor:pointer; transition:all 0.2s;
+}
+#resetBtn:hover {background:#e0e0e0;}
+
+.nav-circle {
+  width:60px; height:60px; border-radius:50%; background:#38b6ff;
+  display:flex; justify-content:center; align-items:center; cursor:pointer;
+  box-shadow:2px 2px 5px #bebebe, -2px -2px 5px #ffffff; transition:all 0.2s;
+}
+.nav-circle:hover {
+  background:#5170ff;
+}
+.nav-circle svg {width:30px; height:30px; stroke:#fff; stroke-width:3; fill:none;}
+
+#resultado {width:80%; max-width:1000px; margin-top:20px; display:none;}
+#introScreen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+  gap: 30px;
+}
+
+#introText {
+  font-family: 'Raleway', sans-serif;
+  font-size: 40px;
+  font-weight: 700;
+  color: #5170ff;
+  text-align: center;
+  margin-top: 45px;
+  margin-bottom: 75px;
+}
+
+.upload-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 22px 40px;
+  font-size: 20px;
+  font-weight: 700;
+  color: #5170ff;
+  border: 2px solid #2563eb;
+  border-radius: 20px;
+  cursor: pointer;
+  background: white;
+  transition: all 0.2s;
+  width: auto;          /* 🔑 NO ocupa todo el ancho */
+}
+#fixedFooter {
+  position: fixed;      /* Fijo al viewport */
+  bottom: 0;            /* Pegado al borde inferior */
+  left: 0;
+  width: 100%;
+  text-align: center;
+  font-family: 'Raleway', sans-serif;
+  font-size: 13px;
+  color: #94a3b8;
+  background: #f5f7fa;  /* opcional: mismo color de fondo de la página */
+  padding: 6px 0;
+  z-index: 1000;        /* encima de todo */
+  pointer-events: none; /* no interfiere con clicks */
+}
+
+/* ===== TRANSICIONES WIZARD ===== */
+
+#wizard {
+  position: relative;
+}
+
+#stepContent {
+  position: relative;
+}
+
+/* Estado base */
+.step-panel {
+  animation-duration: 0.35s;
+  animation-fill-mode: both;
+}
+
+/* Entradas */
+.slide-in-right {
+  animation-name: slideInRight;
+}
+
+.slide-in-left {
+  animation-name: slideInLeft;
+}
+
+/* Salidas */
+.slide-out-left {
+  animation-name: slideOutLeft;
+}
+
+.slide-out-right {
+  animation-name: slideOutRight;
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOutLeft {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+}
+
+@keyframes slideOutRight {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="nav-circle" style="margin-right:15px;" onclick="prevStep()">
+    <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+  </div>
+
+  <div class="app">
+    <div style="text-align:center; margin-bottom:20px;">
+  <img src="logo_rubrimaker.png" alt="Generador de rúbricas educativas" style="max-height:60px; width:auto;">
+</div>
+
+
+
+<div id="introScreen">
+<div id="introText">
+Tus rúbricas en unos pocos clics. ;)
+
+
+</div>
+
+
+
+<label for="excelFile" class="upload-btn">
+  <svg viewBox="0 0 24 24" width="28" height="28" fill="none"
+  stroke="currentColor" stroke-width="2"
+       stroke-linecap="round" stroke-linejoin="round"
+       style="margin-right:12px;">
+    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+    <polyline points="17 8 12 3 7 8"/>
+    <line x1="12" y1="3" x2="12" y2="15"/>
+  </svg>
+
+Cargar currículo
+</label>
+
+<input type="file" id="excelFile" accept=".xlsx" />
+</div>
+
+
+    <div id="wizard" class="hidden">
+      <h2 id="stepTitle"></h2>
+      <div id="stepContent"></div>
+    </div>
+
+
+
+    <div id="resultado">
+  <h2>Prompt generado</h2>
+  <div style="display:flex; align-items:flex-start; gap:10px;">
+    <textarea id="promptFinal" style="flex-grow:1;"></textarea>
+    <button id="copyBtn" onclick="copiarPrompt()" title="Copiar código">
+      <svg viewBox="0 0 24 24" width="24" height="24" stroke="#555" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+      </svg>
+
+    </button>
+  </div>
+</div>
+
+<button id="resetBtn" onclick="resetApp()" title="Reiniciar">
+  <svg viewBox="0 0 24 24" width="26" height="26"
+       fill="none" stroke="currentColor" stroke-width="2"
+       stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="1 4 1 10 7 10"></polyline>
+    <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+  </svg>
+</button>
+
+
+
+  </div>
+
+  <div class="nav-circle" style="margin-left:15px;" onclick="nextStep()">
+    <svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"></polyline></svg>
+  </div>
+</div>
+
+
+<script>
+let workbook;
+let currentStep = 0;
+let lastStep = 0;
+const respuestas = {};
+
+const steps = [
+  { sheet:"ROLES_EVALUACION", title:"Adquiere el siguiente rol:", multi:false },
+  { sheet:"DESCRIPCION", title:"Te describo brevemente la actividad:", text:true },
+  { sheet:"QUE_QUIERES_HACER_EVALUACION", title:"Quiero...", multi:false },
+  { sheet:"COMPETENCIAS", title:"Los nuevos criterios de evaluación que generes para la rúbrica deben evaluar las siguientes competencias", multi:true },
+  { sheet:"CRITERIOS", title:"y los siguientes criterios: ", multi:true },
+  { sheet:"DESCRIPTORES_OPERATIVOS", title:"combinados con los siguientes descriptores operativos: ", multi:true },
+  { sheet:"OBJETIVOS_ETAPA", title:"En la generación de los criterios de evaluación debes tener en cuenta la consecución de los siguientes Objetivos de la Etapa:", multi:true },
+  { sheet:"DESAFIOS_SIGLO_XXI", title:"y ten en cuenta los siguientes desafíos educativos del siglo XXI:", multi:true },
+  { sheet:"ODS", title:"También los siguientes ODS:", multi:true },
+  { sheet:"FORMATO_RUBRICA", title:"Formato de rúbrica ", multi:false,
+    manualOptions:["CLASSROOM","RubriX"] }
+];
+
+document.getElementById("excelFile").addEventListener("change", function(e){
+  const file = e.target.files[0];
+  if(!file) return;
+
+  Object.keys(respuestas).forEach(k=>delete respuestas[k]);
+  currentStep = 0;
+  lastStep = 0;
+
+  const reader = new FileReader();
+  reader.onload = evt => {
+    workbook = XLSX.read(new Uint8Array(evt.target.result), {type:"array"});
+    document.getElementById("introScreen").style.display = "none";
+    document.getElementById("wizard").classList.remove("hidden");
+    document.getElementById("resultado").style.display = "none";
+    mostrarPaso();
+  };
+  reader.readAsArrayBuffer(file);
+});
+
+function resetApp() {
+  location.reload();
+}
+
+function mostrarPaso(){
+  const step = steps[currentStep];
+  document.getElementById("stepTitle").innerText = step.title;
+
+  const cont = document.getElementById("stepContent");
+
+  const oldPanel = cont.querySelector(".step-panel");
+  if (oldPanel) {
+    oldPanel.classList.add(
+      currentStep > lastStep ? "slide-out-left" : "slide-out-right"
+    );
+  }
+
+  const panel = document.createElement("div");
+  panel.className = "step-panel " + (
+    currentStep > lastStep ? "slide-in-right" : "slide-in-left"
+  );
+  panel.style.height = "100%";
+
+  setTimeout(() => {
+    cont.innerHTML = "";
+    cont.appendChild(panel);
+  }, 200);
+
+  lastStep = currentStep;
+  document.getElementById("resultado").style.display = "none";
+
+  if(step.text){
+    const textarea = document.createElement("textarea");
+    textarea.value = respuestas[step.sheet] || "";
+    textarea.oninput = e => respuestas[step.sheet] = e.target.value;
+    panel.appendChild(textarea);
+    return;
+  }
+
+  const chips = document.createElement("div");
+  chips.className = "chips";
+
+  let rows = [];
+  if(step.manualOptions) {
+    rows = step.manualOptions.map(opt => ({texto: opt}));
+  } else if(workbook) {
+    rows = XLSX.utils.sheet_to_json(workbook.Sheets[step.sheet] || []);
+  }
+
+  rows.forEach(row => {
+    const chip = document.createElement("div");
+    chip.className = "chip";
+    chip.innerText = row.texto;
+
+    if(respuestas[step.sheet]?.includes(row.texto)) {
+      chip.classList.add("active");
+    }
+
+    chip.onclick = () => {
+      if(!step.multi){
+        respuestas[step.sheet] = [row.texto];
+        panel.querySelectorAll(".chip").forEach(c => c.classList.remove("active"));
+        chip.classList.add("active");
+      } else {
+        respuestas[step.sheet] = respuestas[step.sheet] || [];
+        if(respuestas[step.sheet].includes(row.texto)){
+          respuestas[step.sheet] = respuestas[step.sheet].filter(v => v !== row.texto);
+          chip.classList.remove("active");
+        } else {
+          respuestas[step.sheet].push(row.texto);
+          chip.classList.add("active");
+        }
+      }
+
+      if(step.sheet === "FORMATO_RUBRICA"){
+        if(row.texto.toUpperCase() === "CLASSROOM"){
+          respuestas["_formatoRubroExtra"] =
+`Genera una rúbrica en formato de Hoja de Cálculo de Google (Google Sheets) lista para importar en Google Classroom.
+La tabla debe tener cinco columnas (A a E). Incluye la fila de código v1.0-s en la celda A1.
+Cada criterio debe seguir esta estructura de seis filas obligatorias antes de pasar al siguiente criterio:
+1. Criterio X (columna A)
+2. Título del Criterio
+3. Fila vacía
+4. Puntuaciones
+5. Títulos de nivel
+6. Descripciones de nivel`;
+        } else if(row.texto.toUpperCase() === "RUBRIX"){
+          respuestas["_formatoRubroExtra"] =
+`Genera la rúbrica en formato tabla con columnas:
+Criterio | Excelente | Bueno | Suficiente | Insuficiente | Peso.
+La suma de los pesos debe ser 100.
+Cada nivel debe incluir descripciones claras y breves.`;
+        } else {
+          delete respuestas["_formatoRubroExtra"];
+        }
+      }
+    };
+
+    chips.appendChild(chip);
+  });
+
+  panel.appendChild(chips);
+}
+
+function nextStep(){
+  if(currentStep < steps.length - 1){
+    currentStep++;
+    mostrarPaso();
+  } else {
+    generarPrompt();
+  }
+}
+
+function prevStep(){
+  if(currentStep > 0){
+    currentStep--;
+    mostrarPaso();
+  }
+}
+
+function generarPrompt(){
+  let prompt = "";
+  steps.forEach(step => {
+    const data = respuestas[step.sheet];
+    if(!data || data.length === 0) return;
+
+    prompt += step.title + ":\n";
+    if(typeof data === "string") {
+      prompt += data + "\n\n";
+    } else {
+      data.forEach(v => prompt += "- " + v + "\n");
+      prompt += "\n";
+    }
+  });
+
+  if(respuestas["_formatoRubroExtra"]) {
+    prompt += "\n" + respuestas["_formatoRubroExtra"] + "\n";
+  }
+
+  document.getElementById("promptFinal").value = prompt;
+  document.getElementById("wizard").classList.add("hidden");
+  document.getElementById("resultado").style.display = "block";
+}
+
+function copiarPrompt(){
+  navigator.clipboard.writeText(
+    document.getElementById("promptFinal").value
+  );
+  alert("Prompt copiado correctamente");
+}
+</script>
+
+<footer id="fixedFooter">
+  Una herramienta pensada para docentes diseñada por José Manuel Sobrino Carrasco | Creative Commons.
+</footer>
+</body>
+</html>
