@@ -62,13 +62,12 @@
       border: 0;
     }
     .logo-img {
-            max-width: 30%;
+            max-width: 40%;
             height: auto;
-            margin-top: 30px;
             display: block;
-            margin-left: auto;
             margin-right: auto;
-      margin-bottom: 20px;
+            padding-top: 20px;
+      margin-bottom: 30px;
         }
   </style>
 </head>
@@ -76,15 +75,15 @@
 <body class="bg-pattern bg-slate-50">
 
   <main class="max-w-4xl mx-auto px-4 md:px-12">
-
+    <header class="logo-container">
+                        <!-- Logotipo en formato PNG -->
+                        <img src="evalua-logo.png" alt="Evalua+" class="logo-img">
+                    </header>
     <div class="card">
-<header class="logo-container">
-                    <!-- Logotipo en formato PNG -->
-                    <img src="evalua-logo.png" alt="Evalua+" class="logo-img">
-                </header>
+
       <header class="mb-10">
         <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900">
-          ¿Cómo funciona?
+        <span class="font-bold text-blue-600">  ¿Cómo funciona? </span>
         </h1>
       </header>
 
@@ -110,13 +109,17 @@
       <div class="flex flex-col sm:flex-row gap-5 mb-14">
         <button onclick="window.open('https://docs.google.com/spreadsheets/d/1lhU1yAhUT495SMFVzSkPrksz3fQk9fzz/edit?usp=sharing&ouid=102958333800648375311&rtpof=true&sd=true', '_blank')"
           class="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-8 py-5 rounded-2xl font-bold flex items-center justify-center gap-3 transition active:scale-95">
-          <i data-lucide="download"></i>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" class="w-14 h-14">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 4v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
           Descargar plantilla ESO
         </button>
 
         <button onclick="window.open('https://docs.google.com/spreadsheets/d/1v43BLggJQXxuE-qILA6C2IBtej9ioIru/edit?usp=sharing&ouid=102958333800648375311&rtpof=true&sd=true', '_blank')"
           class="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-8 py-5 rounded-2xl font-bold flex items-center justify-center gap-3 transition active:scale-95">
-          <i data-lucide="download"></i>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" class="w-16 h-16">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 4v12m0 0l-4-4m4 4l4-4"/>
+          </svg>
           Descargar plantilla Bachillerato
         </button>
 
@@ -313,16 +316,18 @@
     </button>
       </div>
     </div>
-
-  </div>
-
     <footer class="mt-12 text-center">
         <p class="text-slate-400 text-sm font-medium">
             © 2026 Proyecto evalua+ • Hecho por José Manuel Sobrino Carrasco con <span class="text-red-400">❤</span> para docentes
         </p>
     </footer>
+  </div>
+
+
 
   </main>
+
+
   <button onclick="window.location.href='../index.html'"
           class="fixed right-6 bottom-6 bg-gray-800 text-white px-4 py-3 rounded-full shadow-lg hover:bg-gray-700 transition flex items-center gap-2 z-50">
     <!-- Icono de flecha hacia la izquierda -->
