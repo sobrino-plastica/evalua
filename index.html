@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Evalua+ | Herramientas gratuitas diseñadas para la evaluación por competencias en educación</title>
+<title>Evalua+ | Herramientas gratuitas para evaluación por competencias</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;700&display=swap" rel="stylesheet">
 
@@ -13,30 +13,35 @@
 body {
     font-family:'Raleway', sans-serif;
     overflow:hidden;
-    cursor: url('img/cursor-arrow.cur'), auto;
+    background: #f0f0f0;
 }
 
 /* ===== GRID GENERAL ===== */
 .container {
     display:grid;
     grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(2, 1fr);
+    grid-auto-rows: 1fr;
+    gap: 20px; /* espacio uniforme entre divs */
     width:100vw;
     height:100vh;
+    padding: 20px;
 }
 
-/* ===== BOTONES ===== */
+/* ===== SECTIONS ===== */
 .section {
     display:flex;
     justify-content:center;
     align-items:center;
     text-decoration:none;
     color:white;
+    position:relative;
+    overflow:hidden;
+    border-radius:0px;
+    padding:20px;
     animation: fadeSlideIn 0.8s ease forwards;
     opacity:0;
-    transition: transform 0.4s ease, background-position 0.8s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-position 0.8s ease;
     background-size:200% 200%;
-    position:relative;
 }
 
 .section:hover {
@@ -44,17 +49,35 @@ body {
     background-position: top center;
 }
 
-.section:nth-child(1){animation-delay:.1s}
-.section:nth-child(2){animation-delay:.2s}
-.section:nth-child(3){animation-delay:.3s}
-.section:nth-child(4){animation-delay:.4s}
-.section:nth-child(5){animation-delay:.5s}
-.section:nth-child(6){animation-delay:.6s}
+/* Cascada según el índice */
+.section:nth-child(1){animation-delay:.1s;}
+.section:nth-child(2){animation-delay:.2s;}
+.section:nth-child(3){animation-delay:.3s;}
+.section:nth-child(4){animation-delay:.4s;}
+.section:nth-child(5){animation-delay:.5s;}
+.section:nth-child(6){animation-delay:.6s;}
 
+/* ===== ANIMACIÓN ORIGINAL ===== */
 @keyframes fadeSlideIn {
     from { opacity:0; transform: translateY(40px); }
     to { opacity:1; transform: translateY(0); }
 }
+
+/* ===== COLORES ===== */
+.proyecto { background: linear-gradient(to top,#4f7f00,#69A600); }
+.funciona { background: linear-gradient(to top,#d6b315,#F5CF27); color:#222; }
+.comparte { background: linear-gradient(to top,#5f0088,#8600BF); }
+
+.sda { background: linear-gradient(to top,#FF8C00,#ED5E05); }
+.rubrica { background: linear-gradient(to top,#005EFF,#0016DE); }
+.evaluar { background: linear-gradient(to top,#009C06,#085C01); }
+
+.proyecto:hover { background: linear-gradient(to top,#6fae00,#8fd600); }
+.funciona:hover { background: linear-gradient(to top,#FFEA00,#DEB600); }
+.comparte:hover { background: linear-gradient(to top,#8e00d6,#7000B0); }
+.sda:hover { background: linear-gradient(to top,#FA7500,#D95102); }
+.rubrica:hover { background: linear-gradient(to top,#0018F5,#0009B8); }
+.evaluar:hover { background: linear-gradient(to top,#009C06,#007805); }
 
 /* ===== CONTENIDO ===== */
 .content {
@@ -64,9 +87,13 @@ body {
 .content img {
     margin-bottom:18px;
     transition: transform 0.4s ease;
+    max-width: 80%;
+    height: auto;
 }
 
-.section:hover img { transform: scale(1.2); }
+.section:hover img {
+    transform: scale(1.2);
+}
 
 .content p {
     font-size:24px;
@@ -90,88 +117,6 @@ body {
 .section:hover .enter-indicator {
     opacity:1;
     transform: translateY(-5px);
-}
-
-/* ===== BOTONES SUPERIORES (SOLO TEXTO) ===== */
-.proyecto {
-    background: linear-gradient(to top, #4f7f00, #69A600);
-}
-
-.funciona {
-    background: linear-gradient(to top, #d6b315, #F5CF27);
-    color:#222;
-}
-
-.comparte {
-    background: linear-gradient(to top, #5f0088, #8600BF);
-}
-
-/* Hover superiores */
-.proyecto:hover {
-    background: linear-gradient(to top, #6fae00, #8fd600);
-}
-
-.funciona:hover {
-    background: linear-gradient(to top, #FFEA00, #DEB600);
-}
-
-
-.comparte:hover {
-    background: linear-gradient(to top, #8e00d6, #7000B0);
-}
-
-/* ===== BOTONES INFERIORES (LOS ORIGINALES) ===== */
-.sda {
-    background: linear-gradient(to top, #FF8C00, #ED5E05);
-}
-.rubrica {
-    background: linear-gradient(to top, #005EFF, #0016DE);
-}
-.evaluar {
-    background: linear-gradient(to top, #009C06, #085C01);
-}
-
-/* Hover intensificado */
-.sda:hover {
-    background: linear-gradient(to top, #FA7500, #D95102);
-}
-.rubrica:hover {
-    background: linear-gradient(to top, #0018F5, #0009B8);
-}
-.evaluar:hover {
-    background: linear-gradient(to top, #009C06, #007805);
-}
-
-/* ===== DIVISORES OSCUROS ===== */
-.section::after {
-    content:"";
-    position:absolute;
-    right:0;
-    top:0;
-    width:14px;
-    height:100%;
-    background: linear-gradient(to left, rgba(0,0,0,0.45), transparent);
-    pointer-events:none;
-}
-/* ===== SOMBRA DIFUSA HORIZONTAL ENTRE FILAS (NEGRO → TRANSPARENTE) ===== */
-.section:nth-child(n+4)::before {
-    content:"";
-    position:absolute;
-    top:0;              /* justo al empezar la fila inferior */
-    left:0;
-    width:100%;
-    height:18px;
-    background: linear-gradient(
-        to bottom,
-        rgba(0,0,0,0.45),
-        rgba(0,0,0,0)
-    );
-    pointer-events:none;
-}
-
-.section:nth-child(3)::after,
-.section:nth-child(6)::after {
-    display:none;
 }
 
 /* ===== FOOTER ===== */
@@ -209,7 +154,7 @@ body {
         </div>
     </a>
 
-   <a href="comparte/comparte.html" class="section comparte">
+    <a href="comparte/comparte.html" class="section comparte">
         <div class="content">
             <p>Comparte tu currículo :)</p>
             <div class="enter-indicator">&gt;</div>
@@ -219,7 +164,7 @@ body {
     <!-- FILA INFERIOR -->
     <a href="sdamaker/index.html" class="section sda" target="_blank">
         <div class="content">
-            <img src="img/logo_sdamaker.png" width="210">
+            <img src="img/logo_sdamaker.png" alt="SdAmaker">
             <p>Diseñar SdA</p>
             <div class="enter-indicator">&gt;</div>
         </div>
@@ -227,7 +172,7 @@ body {
 
     <a href="rubrimaker/index.html" class="section rubrica" target="_blank">
         <div class="content">
-            <img src="img/logo_rubrimaker.png" width="250">
+            <img src="img/logo_rubrimaker.png" alt="Rubrimaker">
             <p>Diseñar rúbrica</p>
             <div class="enter-indicator">&gt;</div>
         </div>
@@ -235,7 +180,7 @@ body {
 
     <a href="rubrix/index.html" class="section evaluar" target="_blank">
         <div class="content">
-            <img src="img/logo_rubrix.png" width="160">
+            <img src="img/logo_rubrix.png" alt="Rubrix">
             <p>Evaluar</p>
             <div class="enter-indicator">&gt;</div>
         </div>
@@ -244,7 +189,7 @@ body {
 </div>
 
 <footer id="fixedFooter">
-© 2026 Proyecto evalua+ • Diseñado por José Manuel Sobrino Carrasco con <span class="text-red-400">❤</span> para docentes
+© 2026 Proyecto evalua+ • Diseñado por José Manuel Sobrino Carrasco con <span style="color:#FF3B3B;">❤</span> para docentes
 </footer>
 
 </body>
