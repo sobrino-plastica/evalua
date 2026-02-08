@@ -50,32 +50,56 @@
 
 <main class="max-w-4xl mx-auto px-4 md:px-12 py-16 space-y-8">
   <header class="mb-10">
-    <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900">
-      Biblioteca de prompts
-    </h1>
-    <br>
-    <div class="card space-y-4" style="background-color: #badafa;">
-      <h2 class="text-2xl font-bold text-slate-800">PROMPTS PARA CONFIGURAR TU CURRÍCULO EXCEL</h2>
-      <p class="text-slate-700 text-justify">
-        Para utilizar las distintas herramientas necesitarás configurar antes tus propios currículos de cada materia.
-        Aquí te dejo los pasos y prompts que te ayudarán a hacerlo de manera rápida y sencilla.
-      </p>
+  <h1 class="flex items-center gap-3 text-4xl md:text-5xl font-extrabold text-slate-600">
 
-    </div>
+    <!-- Icono de código -->
+    <svg xmlns="http://www.w3.org/2000/svg"
+         fill="none" viewBox="0 0 24 24" stroke="currentColor"
+         class="w-9 h-9 text-blue-600">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M16 18l6-6-6-6M8 6l-6 6 6 6"/>
+    </svg>
 
+  <span class="text-blue-600">Biblioteca de prompts</span>
+  </h1>
 
-
-  </header>
+  <br>
+  <div class="card space-y-4" style="background-color: #badafa;">
+    <h2 class="text-2xl font-bold text-slate-800">PROMPTS PARA CONFIGURAR TU CURRÍCULO EXCEL</h2>
+    <p class="text-slate-700 text-justify">
+      Para utilizar las distintas herramientas necesitarás configurar antes tus propios currículos de cada materia.
+      Aquí te dejo los pasos y prompts que te ayudarán a hacerlo de manera rápida y sencilla.
+    </p>
+  </div>
+</header>
 
   <!-- CARD 1 -->
 
 
   <div class="card space-y-4">
-    <h2 class="text-2xl font-bold text-slate-800">PROMPT PARA EXTRAER LOS SABERES BÁSICOS, COMPETENCIAS Y CRITERIOS</h2>
+    <h2 class="text-2xl font-bold text-slate-800">INSTRUCCIONES PARA EXTRAER LOS SABERES BÁSICOS, COMPETENCIAS Y CRITERIOS</h2>
     <p class="text-slate-700 text-justify">
-      1. Entra en la web oficial de educación de tu comunidad autónoma y descarga el currículo completo de la enseñanza en concreto que quieras configurar (ESO, Bachillerato).<br>
-      2. Ve a iLove PDF u otra web cualquiera que permita extraer páginas de un PDF. Nos interesa extraer el rango de páginas de nuestra materia.<br>
-      3. Una vez descargado, ve a Gemini, sube ese archivo y pega este prompt en el chat:<br><br>
+      <hr style="height:1px; border-width:0; color:gray; background-color:gray; width:100%;"></hr></br>
+    <strong>  1. Entra en la web oficial de educación de tu comunidad autónoma y descarga el currículo completo de la enseñanza en concreto que quieras configurar (ESO, Bachillerato).</br></br>
+<hr style="height:1px; border-width:0; color:gray; background-color:gray; width:100%;"></hr></br>
+      2. Ve a iLovePDF.com u otra web cualquiera que permita extraer páginas de un PDF. Lo utilizaremos para extraer el rango de páginas de nuestra materia.</br></br>
+
+      <hr style="height:1px; border-width:0; color:gray; background-color:gray; width:100%;"></hr></br>
+      3. Una vez descargado, ve a Gemini, sube ese archivo y pega este prompt en el chat:</strong><br><br>
+      </hr>
+  <p class="flex items-center gap-2 text-slate-700 font-semibold font-semibold text-[1.4rem]">
+Prompt (Copia y pega en
+<span class="inline-flex items-center gap-1">
+  <img
+    src="gemini-color.png"
+    alt="Gemini"
+    class="w-5 h-5 object-contain"
+  />
+  Gemini
+</span>
+)
+</p>
+</br>
       <em>A partir del archivo PDF que te adjunto, extrae los siguientes datos: Saberes básicos, competencias específicas y criterios de evaluación. Con ellos, genérame una tabla de excel simple en el que cada item de cada apartado debe ocupar una única fila. Unifícame los códigos y las descripciones en una misma columna. En el apartado de saberes básicos, obvia los bloques y las categorías (A1, A2, ... B1, B2, B3...). Muestra únicamente el código y el saber en una misma fila. Unifícame todo en un único archivo de excel.</em>
     </p>
     <button class="btn-copy bg-blue-600 text-white px-5 py-3 rounded-lg font-semibold hover:bg-blue-700 transition" onclick="copyText(this)">
@@ -86,7 +110,8 @@
 
   <!-- CARD 3 -->
   <div class="card space-y-4">
-    <h2 class="text-2xl font-bold text-slate-800">PROMPT PARA EXTRAER DESCRIPTORES OPERATIVOS DE LA ESO</h2>
+    <h2 class="text-2xl font-bold text-slate-800">PROMPT PARA EXTRAER DESCRIPTORES OPERATIVOS DE LA ESO <em>(Ya dispones de la plantilla con los descriptores operativos de la ESO incluidos
+  <a href="https://docs.google.com/spreadsheets/d/1lhU1yAhUT495SMFVzSkPrksz3fQk9fzz/edit?usp=sharing&ouid=102958333800648375311&rtpof=true&sd=true" style="color: blue;">aquí</a>).</em></h2>
     <p class="text-slate-700 text-justify">
       <em>Entra y analiza esta página: https://educagob.educacionfpydeportes.gob.es/curriculo/curriculo-lomloe/menu-curriculos-basicos/ed-secundaria-obligatoria/competencias-clave.html.<br>
       A continuación, genérame una tabla de excel con cada una de las 8 competencias clave y sus descriptores operativos seleccionando únicamente los que aparecen en la columna "Al completar la enseñanza básica, el alumno o la alumna…" de cada competencia. Agrupa código y su descriptor operativo en una misma columna.</em>
@@ -99,7 +124,8 @@
 
   <!-- CARD 4 -->
   <div class="card space-y-4">
-    <h2 class="text-2xl font-bold text-slate-800">PROMPT PARA EXTRAER DESCRIPTORES OPERATIVOS DE BACHILLERATO</h2>
+    <h2 class="text-2xl font-bold text-slate-800">PROMPT PARA EXTRAER DESCRIPTORES OPERATIVOS DE BACHILLERATO<em> (Ya dispones de la plantilla con los descriptores operativos de Bachillerato incluidos
+  <a href="https://docs.google.com/spreadsheets/d/1v43BLggJQXxuE-qILA6C2IBtej9ioIru/edit?usp=drive_link&ouid=102958333800648375311&rtpof=true&sd=true" style="color: blue;">aquí</a>).</em></h2>
     <p class="text-slate-700 text-justify">
       <em>Entra y analiza esta página: https://educagob.educacionfpydeportes.gob.es/curriculo/curriculo-lomloe/menu-curriculos-basicos/bachillerato/competencias-clave.html.<br>
       A continuación, genérame una tabla de excel con cada una de las 8 competencias clave y sus descriptores operativos seleccionando únicamente los que aparecen en la columna "Al completar el Bachillerato, el alumno o la alumna…" de cada competencia. Agrupa código y su descriptor operativo en una misma columna.</em>
@@ -113,7 +139,7 @@
     <h2 class="text-2xl font-bold text-slate-800">PROMPTS PARA CONFIGURAR RÚBRIX</h2>
     <p class="text-slate-700 text-justify">
       Para utilizar la herramienta <span class="font-bold text-blue-600">Rubrix</span> necesitarás crear un excel con tu listado de clase para que lo cargue la app.
-      Aquí te dejo el prompt que te ayudará a hacerlo de manera rápida y sencilla con el formato necesario <strong>(Importante: no vale cualquier formato de tabla).</strong> </br>Simplemente, <strong>en el chat de Gemini sustituye [PEGA AQUÍ TU LISTA DE ALUMNOS] por tu listado de alumnos.</strong> </br> También te dejo la plantilla excel con el formato requerido por Rubrix.
+      Aquí te dejo el prompt que te ayudará a hacerlo de manera rápida y sencilla con el formato necesario <strong>(Importante: no vale cualquier formato de tabla).</strong> </br>Simplemente, <strong>cuando pegues este prompt en el chat de Gemini, antes de pulsar enter, sustituye <em>[PEGA AQUÍ TU LISTA DE ALUMNOS]</em> por tu listado de alumnos.</strong> </br></br> También te dejo la plantilla excel con el formato requerido por Rubrix.
     </p>
 
   </div>
