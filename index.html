@@ -84,24 +84,10 @@ body {
     text-align:center;
 }
 
-.content1 img {
+.content img {
     margin-bottom:18px;
     transition: transform 0.4s ease;
     max-width: 50%;
-    height: auto;
-}
-
-.content2 img {
-    margin-bottom:18px;
-    transition: transform 0.4s ease;
-    max-width: 60%;
-    height: auto;
-}
-
-.content3 img {
-    margin-bottom:18px;
-    transition: transform 0.4s ease;
-    max-width: 40%;
     height: auto;
 }
 
@@ -146,6 +132,18 @@ body {
     pointer-events:none;
     z-index:1000;
 }
+.content-sda img {
+    max-width: 50%; /* más grande */
+}
+
+.content-rubrica img {
+    max-width: 60%; /* tamaño medio */
+}
+
+.content-rubrix img {
+    max-width: 40%; /* más pequeño */
+}
+
 </style>
 </head>
 
@@ -177,28 +175,28 @@ body {
 
     <!-- FILA INFERIOR -->
     <a href="sdamaker/index.html" class="section sda" target="_blank">
-        <div class="content">
-            <img src="img/logo_sdamaker.png" alt="SdAmaker">
-            <p>Diseñar SdA</p>
-            <div class="enter-indicator">&gt;</div>
-        </div>
-    </a>
+    <div class="content content-sda">
+        <img src="img/logo_sdamaker.png" alt="SdAmaker">
+        <p>Diseñar SdA</p>
+        <div class="enter-indicator">&gt;</div>
+    </div>
+</a>
 
-    <a href="rubrimaker/index.html" class="section rubrica" target="_blank">
-        <div class="content">
-            <img src="img/logo_rubrimaker.png" alt="Rubrimaker">
-            <p>Diseñar rúbrica</p>
-            <div class="enter-indicator">&gt;</div>
-        </div>
-    </a>
+<a href="rubrimaker/index.html" class="section rubrica" target="_blank">
+<div class="content content-rubrica">
+    <img src="img/logo_rubrimaker.png" alt="Rubrimaker">
+    <p>Diseñar rúbrica</p>
+    <div class="enter-indicator">&gt;</div>
+</div>
+</a>
 
-    <a href="rubrix/index.html" class="section evaluar" target="_blank">
-        <div class="content">
-            <img src="img/logo_rubrix.png" alt="Rubrix">
-            <p>Evaluar</p>
-            <div class="enter-indicator">&gt;</div>
-        </div>
-    </a>
+<a href="rubrix/index.html" class="section evaluar" target="_blank">
+<div class="content content-rubrix">
+    <img src="img/logo_rubrix.png" alt="Rubrix">
+    <p>Evaluar</p>
+    <div class="enter-indicator">&gt;</div>
+</div>
+</a>
 
 </div>
 
