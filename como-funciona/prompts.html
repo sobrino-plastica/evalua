@@ -175,15 +175,22 @@
 </button>
 
 <script>
-function copyText() {
-  // Selecciona TODO el texto completo que quieras copiar (puede estar en un <p> oculto si quieres)
+function copyText(button) {
   const fullText = `Eres un experto en análisis curricular y transformación de datos educativos. Tu tarea es procesar CUALQUIER documento PDF ... (todo el texto completo del prompt)`;
   
   navigator.clipboard.writeText(fullText)
-    .then(() => alert('Prompt copiado al portapapeles'))
+    .then(() => {
+      // Cambiamos el texto del botón
+      const originalText = button.innerHTML;
+      button.innerHTML = 'Prompt copiado!';
+      
+      // Volvemos al texto original después de 2 segundos
+      setTimeout(() => {
+        button.innerHTML = originalText;
+      }, 2000);
+    })
     .catch(err => console.error('Error al copiar:', err));
 }
 </script>
-
 </body>
 </html>
