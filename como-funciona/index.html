@@ -502,47 +502,30 @@ Debes entregar ÚNICAMENTE:
         </iframe>
       </div>
 
-      <div class="card space-y-4">
-        <h2 class="text-2xl font-bold text-slate-800">Prompt para crear Excel con listado de clase</h2>
-        <p class="text-slate-700 text-justify">
-          <em>Instrucción: Actúa como un asistente administrativo escolar experto en gestión de datos. Tu tarea es convertir cualquier listado de nombres que yo te proporcione en una estructura de tabla idéntica a mi plantilla de clase.<br>
-          Reglas de formato:<br>
-          1. Estructura de columnas: Genera siempre 3 columnas exactas: Nº, Apellidos, Nombre.<br>
-          2. Procesamiento de datos: Separar apellidos y nombres, numerar desde 1.<br>
-          3. Formato de salida: Presenta el resultado en tabla de Markdown lista para copiar en Excel/Sheets.<br>
-          4. Filtro: No añadas introducciones ni explicaciones.<br>
-          Listado de alumnos a procesar: [PEGA AQUÍ TU LISTA DE ALUMNOS]</em>
-        </p>
-        </br>
-        <button onclick="copyText(this)"
-        class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-bold flex items-center justify-center gap-2 transition active:scale-95">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 18H8V7h11v16z"/>
-        </svg>
-        <span>Copiar prompt</span>
-        </button>
-        </br>
-        <section class="text-slate-600 text-lg md:text-xl space-y-6 mb-12 text-justified">
-
-          <p>
-            Simplemente haz click en el botón "Copiar prompt", ve a Gemini, pulsa Ctrl+V en el chat y sustituye el texto <strong> [PEGA AQUÍ TU LISTA DE ALUMNOS]</strong> por el listado de tus alumnos.
-
-          </p>
-        </section>
-        </br>
-
-
-
-        <button onclick="window.open('https://docs.google.com/spreadsheets/d/1WCbGzIGbLGvBVICEErtZiy_xnUZn58JP/edit?usp=sharing', '_blank')"
-            class="flex-1 bg-blue-400 hover:bg-blue-700 text-white px-8 py-5 rounded-2xl font-bold flex items-center justify-center gap-3 transition active:scale-95">
-      <!-- Icono clásico de descarga -->
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" class="w-6 h-6">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 4v12m0 0l-4-4m4 4l4-4"/>
-      </svg>
-      Descargar plantilla Listado clase
-    </button>
-      </div>
-    </div>
+      <div class="card space-y-4" style="border: 1px solid #ccc; padding: 10px; border-radius: 8px;">
+    <h2 class="text-2xl font-bold text-slate-800">Prompt para crear Excel con listado de clase</h2>
+  <p class="prompt-text" style="max-height: 200px; overflow-y: auto; white-space: pre-wrap;">
+      <em>Instrucción: Actúa como un asistente administrativo escolar experto en gestión de datos. Tu tarea es convertir cualquier listado de nombres que yo te proporcione en una estructura de tabla idéntica a mi plantilla de clase.<br>
+      Reglas de formato:<br>
+      1. Estructura de columnas: Genera siempre 3 columnas exactas: Nº, Apellidos, Nombre.<br>
+      2. Procesamiento de datos: Separar apellidos y nombres, numerar desde 1.<br>
+      3. Formato de salida: Presenta el resultado en tabla de Markdown lista para copiar en Excel/Sheets.<br>
+      4. Filtro: No añadas introducciones ni explicaciones.<br>
+      Listado de alumnos a procesar: [PEGA AQUÍ TU LISTA DE ALUMNOS]</em>
+    </p>
+     <button class="btn-copy bg-blue-600 text-white px-5 py-3 rounded-lg font-semibold hover:bg-green-700 transition">
+    Copiar prompt
+  </button>
+</div>
+    <button onclick="window.open('https://docs.google.com/spreadsheets/d/1WCbGzIGbLGvBVICEErtZiy_xnUZn58JP/edit?usp=sharing', '_blank')"
+        class="flex-1 bg-blue-400 hover:bg-blue-700 text-white px-8 py-5 rounded-2xl font-bold flex items-center justify-center gap-3 transition active:scale-95">
+  <!-- Icono clásico de descarga -->
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" class="w-6 h-6">
+    <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 4v12m0 0l-4-4m4 4l4-4"/>
+  </svg>
+  Descargar plantilla Listado clase
+</button>
+  </div>
     <footer class="mt-12 text-center">
         <p class="text-slate-400 text-sm font-medium">
             © 2026 Proyecto evalua+ • Hecho por José Manuel Sobrino Carrasco con <span class="text-red-400">❤</span> para docentes
