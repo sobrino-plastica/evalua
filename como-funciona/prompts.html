@@ -93,6 +93,8 @@
   </div>
   <!-- Botón copiar -->
   <button class="btn-copy bg-blue-600 text-white px-5 py-3 rounded-lg font-semibold hover:bg-blue-700 transition" onclick="copyText()">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 18H8V7h11v16z"/></svg>
+
     Copiar prompt
   </button>
 </div>
@@ -175,22 +177,26 @@
 </button>
 
 <script>
-function copyText(button) {
-  const fullText = `Eres un experto en análisis curricular y transformación de datos educativos. Tu tarea es procesar CUALQUIER documento PDF ... (todo el texto completo del prompt)`;
-  
-  navigator.clipboard.writeText(fullText)
-    .then(() => {
-      // Cambiamos el texto del botón
-      const originalText = button.innerHTML;
-      button.innerHTML = 'Prompt copiado!';
-      
-      // Volvemos al texto original después de 2 segundos
-      setTimeout(() => {
-        button.innerHTML = originalText;
-      }, 2000);
-    })
-    .catch(err => console.error('Error al copiar:', err));
-}
+// Seleccionamos todos los botones con la clase 'btn-copy'
+document.querySelectorAll('.btn-copy').forEach(button => {
+  button.addEventListener('click', () => {
+    // Aquí defines el texto completo que quieres copiar
+    const fullText = `Eres un experto en análisis curricular y transformación de datos educativos. Tu tarea es procesar CUALQUIER documento PDF ... (todo el texto completo del prompt)`;
+
+    navigator.clipboard.writeText(fullText)
+      .then(() => {
+        // Guardamos el texto original del botón
+        const originalText = button.innerHTML;
+        // Cambiamos el texto del botón
+        button.innerHTML = 'Prompt copiado!';
+        // Volvemos al texto original después de 2 segundos
+        setTimeout(() => {
+          button.innerHTML = originalText;
+        }, 2000);
+      })
+      .catch(err => console.error('Error al copiar:', err));
+  });
+});
 </script>
 </body>
 </html>
