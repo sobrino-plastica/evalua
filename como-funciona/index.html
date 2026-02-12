@@ -94,6 +94,209 @@
           Paso 1. Extrae los elementos curriculares de tu currículo oficial.
         </h2>
 
+  <p class="text-slate-700 text-justify"> <hr style="height:1px; border-width:0; color:gray; background-color:gray; width:100%;"></hr></br> 
+    <strong> 1. Entra en la web oficial de educación de tu comunidad autónoma y descarga el currículo completo de la enseñanza en concreto que quieras configurar (ESO, Bachillerato).</br></br> 
+      <hr style="height:1px; border-width:0; color:gray; background-color:gray; width:100%;"></hr></br> 
+      2. Ve a iLovePDF.com u otra web cualquiera que permita extraer páginas de un PDF. Lo utilizaremos para extraer el rango de páginas de nuestra materia.</br></br> 
+      <hr style="height:1px; border-width:0; color:gray; background-color:gray; width:100%;"></hr></br> 
+      3. Una vez descargado, ve a DeepSeek, sube ese archivo y pega este prompt en el chat:</strong><br><br> </hr> 
+  <p class="flex items-center gap-2 text-slate-700 font-semibold font-semibold text-[1.4rem]"> Prompt (Copia y pega en <span class="inline-flex items-center gap-1"> 
+   <a href="https://chat.deepseek.com/" target="_blank"> <img src="deepseek.png" alt="Logo" style="height: 35px; vertical-align: middle;"> </a></span> ) </p> </br>
+
+  <!-- Área visible parcial con scroll -->
+  <div class="card space-y-4" style="border: 1px solid #ccc; padding: 10px; border-radius: 8px;">
+  <p class="prompt-text" style="max-height: 200px; overflow-y: auto; white-space: pre-wrap;">
+Eres un experto en análisis curricular y transformación de datos educativos. Tu tarea es procesar CUALQUIER documento PDF de currículo educativo (cualquier materia, comunidad autónoma, etapa educativa) y generar un archivo TSV (valores separados por tabulaciones) con estructura de BASE DE DATOS NORMALIZADA.
+
+---
+## 📌 OBJETIVO PRINCIPAL
+A partir del archivo PDF que te adjunto, genera un archivo TSV donde CADA FILA contenga UN ÚNICO ELEMENTO CURRICULAR y cada columna represente UNA CATEGORÍA CURRICULAR DISTINTA. NO se permite apilar múltiples elementos en una misma celda con saltos de línea. Cada competencia, cada saber básico, cada criterio de evaluación, cada bloque, cada sub-bloque, debe ocupar su propia fila y su propia celda en la columna correspondiente.
+
+---
+## 📁 ESTRUCTURA DE COLUMNAS (FIJAS, 6 COLUMNAS EXACTAS)
+
+Las columnas son SIEMPRE estas seis, en este orden exacto:
+
+| COLUMNA | NOMBRE | CONTENIDO QUE ALBERGA |
+|--------|--------|------------------------|
+| A | COMPETENCIA ESPECÍFICA | Una competencia específica por fila (texto completo) |
+| B | BLOQUE | Título del bloque principal o sub-bloque (estructura jerárquica) |
+| C | SABER BÁSICO (NIVEL INICIAL) | Un saber básico de nivel inicial por fila (con código y descripción) |
+| D | SABER BÁSICO (NIVEL AVANZADO) | Un saber básico de nivel avanzado por fila (con código y descripción) |
+| E | CRITERIO EVALUACIÓN (NIVEL INICIAL) | Un criterio de evaluación de nivel inicial por fila |
+| F | CRITERIO EVALUACIÓN (NIVEL AVANZADO) | Un criterio de evaluación de nivel avanzado por fila |
+
+---
+## 🔍 REGLAS DE EXTRACCIÓN POR COLUMNA
+
+### COLUMNA A: COMPETENCIA ESPECÍFICA
+- Localiza el apartado "Competencias específicas" o equivalente.
+- Extrae CADA competencia enumerada.
+- Cada competencia va en UNA CELDA, UNA POR FILA.
+- Conserva la numeración original y el texto COMPLETO Y LITERAL.
+- Si una competencia tiene múltiples párrafos, se unen en un solo bloque de texto sin saltos de línea internos.
+- Las filas de competencias NO deben tener contenido en las columnas B, C, D, E, F (deben estar vacías).
+
+### COLUMNA B: BLOQUE
+- Localiza el apartado "Saberes básicos", "Contenidos", "Bloques de contenido" o equivalente.
+- Extrae la ESTRUCTURA JERÁRQUICA COMPLETA:
+  - **Bloques principales** (A, B, C... / I, II, III... / títulos temáticos)
+  - **Sub-bloques** (A.1, A.2, B.1, I.1, 1.1, 2.1...)
+- CADA BLOQUE PRINCIPAL y CADA SUB-BLOQUE va en UNA FILA PROPIA.
+- Formato:
+  - Bloques principales: texto sin sangría, sin viñeta, sin código adicional.
+  - Sub-bloques: con sangría de 2 espacios, con su código y título completo.
+- Las filas de bloques NO deben tener contenido en A, C, D, E, F.
+
+### COLUMNA C: SABER BÁSICO (NIVEL INICIAL)
+- Identifica los NIVELES INICIALES en el documento (1.º ESO, 2.º ESO, 1.º-2.º ESO, Primer ciclo, Primer curso, Nivel 1, etc.).
+- Extrae TODOS los saberes básicos asociados a esos niveles, de TODOS los bloques.
+- CADA SABER (con su código completo y descripción literal) va en UNA CELDA, UNA POR FILA.
+- Debe aparecer el código COMPLETO (ej. A.1.2.1, B.3.1.4) y la descripción tal cual.
+- Las filas de saberes iniciales NO deben tener contenido en A, B, D, E, F.
+
+### COLUMNA D: SABER BÁSICO (NIVEL AVANZADO)
+- Identifica los NIVELES AVANZADOS (3.º ESO, 4.º ESO, 3.º-4.º ESO, Segundo ciclo, Nivel 2, etc.).
+- Extrae TODOS los saberes básicos asociados a esos niveles, de TODOS los bloques.
+- CADA SABER (código + descripción literal) va en UNA CELDA, UNA POR FILA.
+- Las filas de saberes avanzados NO deben tener contenido en A, B, C, E, F.
+
+### COLUMNA E: CRITERIO EVALUACIÓN (NIVEL INICIAL)
+- Localiza el apartado "Criterios de evaluación", "Evaluación", "Estándares de aprendizaje".
+- Identifica los subapartados correspondientes a NIVELES INICIALES.
+- Extrae CADA criterio de evaluación INDIVIDUAL (con su numeración completa).
+- CADA CRITERIO va en UNA CELDA, UNA POR FILA.
+- Las filas de criterios iniciales NO deben tener contenido en A, B, C, D, F.
+
+### COLUMNA F: CRITERIO EVALUACIÓN (NIVEL AVANZADO)
+- Identifica los subapartados correspondientes a NIVELES AVANZADOS.
+- Extrae CADA criterio de evaluación INDIVIDUAL.
+- CADA CRITERIO va en UNA CELDA, UNA POR FILA.
+- Las filas de criterios avanzados NO deben tener contenido en A, B, C, D, E.
+
+---
+## 🧩 DETECCIÓN DE NIVELES EDUCATIVOS (CRUCIAL)
+
+1. ESCANEA el documento buscando CURSOS, CICLOS, TRIMESTRES, SEMESTRES o cualquier indicador de progresión.
+2. Si hay MÚLTIPLES NIVELES, agrúpalos SIEMPRE en DOS ÚNICAS CATEGORÍAS:
+   - **NIVEL INICIAL**: cursos/trimestres/ciclos más bajos (ej. 1.º-2.º ESO, 1.º ESO, Primer ciclo, 1.º Bachillerato)
+   - **NIVEL AVANZADO**: cursos/trimestres/ciclos más altos (ej. 3.º-4.º ESO, 4.º ESO, Segundo ciclo, 2.º Bachillerato)
+3. Los NOMBRES DE LAS COLUMNAS C, D, E, F deben reflejar los términos EXACTOS que usa el documento.
+4. Si el documento tiene UN SOLO NIVEL, duplica el nombre en ambas columnas.
+5. Si NO ESPECIFICA NIVELES, usa "Nivel 1" y "Nivel 2".
+
+---
+## 🧠 REGLAS ABSOLUTAS DE NORMALIZACIÓN
+
+✅ **UNA FILA = UN ELEMENTO**
+- Cada competencia → su propia fila (columna A)
+- Cada bloque principal → su propia fila (columna B)
+- Cada sub-bloque → su propia fila (columna B)
+- Cada saber inicial → su propia fila (columna C)
+- Cada saber avanzado → su propia fila (columna D)
+- Cada criterio inicial → su propia fila (columna E)
+- Cada criterio avanzado → su propia fila (columna F)
+
+🚫 **PROHIBICIONES ABSOLUTAS**
+- NO apilar múltiples elementos en una misma celda con saltos de línea.
+- NO usar formato Markdown en el TSV (ni negritas, ni viñetas, ni sangrías visuales).
+- NO incluir cabeceras repetidas dentro de las celdas.
+- NO fusionar celdas.
+- NO alinear verticalmente elementos de distintas columnas (cada columna es independiente).
+- NO modificar, resumir ni parafrasear los textos. EXACTITUD LITERAL.
+- NO inventar conectores, separadores o elementos decorativos.
+
+✅ **OBLIGACIONES ABSOLUTAS**
+- Respetar la numeración original exacta.
+- Respetar mayúsculas, minúsculas, puntuación y erratas.
+- Respetar los códigos de los saberes aunque tengan errores o repeticiones.
+- Respetar el orden original de aparición en el documento.
+- Las columnas sin contenido para esa fila deben quedar VACÍAS ("").
+
+---
+## 📊 FORMATO DE SALIDA: TSV (VALORES SEPARADOS POR TABULACIONES)
+
+- Codificación: UTF-8
+- Separador de campo: Tabulación (\t)
+- Delimitador de texto: Comillas dobles (") en TODOS los campos
+- Saltos de línea: \n (solo dentro de las comillas si el texto original tiene saltos)
+- Extensión del archivo: .tsv
+
+Estructura EXACTA de la primera fila (encabezados):
+
+"COMPETENCIA ESPECÍFICA" [TAB] "BLOQUE" [TAB] "SABER BÁSICO ([NOMBRE NIVEL INICIAL])" [TAB] "SABER BÁSICO ([NOMBRE NIVEL AVANZADO])" [TAB] "CRITERIO EVALUACIÓN ([NOMBRE NIVEL INICIAL])" [TAB] "CRITERIO EVALUACIÓN ([NOMBRE NIVEL AVANZADO])"
+
+---
+## 🔄 ORDEN DE LAS FILAS EN EL ARCHIVO FINAL
+
+El archivo TSV debe respetar este orden de apilamiento:
+
+1. TODAS las competencias específicas (columna A)
+2. TODOS los bloques y sub-bloques (columna B)
+3. TODOS los saberes de nivel inicial (columna C)
+4. TODOS los saberes de nivel avanzado (columna D)
+5. TODOS los criterios de nivel inicial (columna E)
+6. TODOS los criterios de nivel avanzado (columna F)
+
+NO intercalar filas de diferentes categorías. Es decir:
+- Primero todas las filas con contenido en A, luego todas con contenido en B, luego todas con contenido en C, etc.
+- Las filas de una misma columna deben aparecer SEGUIDAS, sin filas de otras columnas intercaladas.
+
+---
+## 🧪 EJEMPLO VISUAL DE CÓMO DEBE QUEDAR (EN SHEETS)
+
+| A (Competencia) | B (Bloque) | C (Saber 1º-2º) | D (Saber 3º-4º) | E (Criterio 1º-2º) | F (Criterio 3º-4º) |
+|-----------------|------------|------------------|------------------|---------------------|---------------------|
+| 1. Competencia 1 |            |                  |                  |                     |                     |
+| 2. Competencia 2 |            |                  |                  |                     |                     |
+| 3. Competencia 3 |            |                  |                  |                     |                     |
+|                  | Bloque A   |                  |                  |                     |                     |
+|                  |   A.1 Título |                  |                  |                     |                     |
+|                  |            | A.1.2.1: Saber  |                  |                     |                     |
+|                  |            | A.1.2.2: Saber  |                  |                     |                     |
+|                  |   A.2 Título |                  |                  |                     |                     |
+|                  |            | A.2.2.1: Saber  |                  |                     |                     |
+|                  |            |                  | A.1.4.1: Saber  |                     |                     |
+|                  |            |                  | A.1.4.2: Saber  |                     |                     |
+|                  |            |                  |                  | 1.1. Criterio     |                     |
+|                  |            |                  |                  | 1.2. Criterio     |                     |
+|                  |            |                  |                  |                     | 1.1. Criterio     |
+|                  |            |                  |                  |                     | 1.2. Criterio     |
+
+---
+## ✅ VERIFICACIÓN FINAL (AUTOCONTROL)
+
+Antes de entregar el TSV, comprueba:
+
+- [ ] ¿Cada celda contiene UN SOLO elemento curricular (no varios apilados)?
+- [ ] ¿Cada fila tiene contenido en UNA SOLA columna (excepto encabezados)?
+- [ ] ¿Se respeta el orden de apilamiento (A → B → C → D → E → F)?
+- [ ] ¿Los nombres de los niveles en los encabezados son los EXACTOS del documento?
+- [ ] ¿Todos los textos son LITERALES, sin modificaciones?
+- [ ] ¿Los códigos de saberes están COMPLETOS y EXACTOS?
+- [ ] ¿Los criterios mantienen su numeración ORIGINAL?
+- [ ] ¿Las columnas sin contenido para esa fila están VACÍAS ("")?
+- [ ] ¿El archivo está en formato TSV UTF-8 con tabulaciones y comillas dobles?
+
+---
+## 🎯 ENTREGA FINAL
+
+Debes entregar ÚNICAMENTE:
+
+1. El contenido del archivo TSV listo para copiar y pegar.
+2. Debe comenzar con la fila de encabezados.
+3. Debe continuar con las filas de datos en el orden establecido.
+4. Sin texto adicional, sin explicaciones, sin comentarios, sin Markdown, sin bloques de código.
+5. Solo el TSV puro, en texto plano.
+6. No dejes celdas vacías en blanco en la tabla. Ocupa todas las celdas de la columna A (A1,A2,A3, A4... y así sucesivamente) para las competencias específicas. Aplica este mismo patrón para los demás apartados. 
+
+---
+⚠️ **RECUERDA: NO ES UNA TABLA RESUMEN. ES UNA BASE DE DATOS. CADA FILA, UN ELEMENTO.**
+  </p>
+
+  <button class="btn-copy bg-blue-600 text-white px-5 py-3 rounded-lg font-semibold hover:bg-blue-700 transition">
+    Copiar prompt
+  </button>
         <p>
           Para utilizar las distintas herramientas
           <span class="font-bold text-blue-600">necesitarás configurar antes tus propios currículos</span>.
@@ -361,28 +564,28 @@
     Volver atrás
   </button>
   <script>
-  function copyText(button) {
-    const card = button.closest('.card');
-    const em = card.querySelector('em');
-    if (em) {
-      navigator.clipboard.writeText(em.innerText).then(() => {
-        const originalContent = button.innerHTML;
-        // Solo cambiamos el texto, manteniendo icono
-        button.innerHTML = `
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 24 24">
-            <path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 18H8V7h11v16z"/>
-          </svg>
-          <span>¡Copiado!</span>
-        `;
+// Función para todos los botones de copiar
+document.querySelectorAll('.btn-copy').forEach(button => {
+  button.addEventListener('click', () => {
+    // Selecciona el contenedor padre de este botón
+    const parent = button.closest('.card');
+    const textElement = parent.querySelector('.prompt-text');
+
+    // Copia TODO el texto completo, no solo la parte visible
+    const textToCopy = textElement.innerText;
+
+    navigator.clipboard.writeText(textToCopy)
+      .then(() => {
+        // Cambiamos el texto del botón temporalmente
+        const originalText = button.innerHTML;
+        button.innerHTML = 'Prompt copiado!';
         setTimeout(() => {
-          button.innerHTML = originalContent;
-        }, 1500);
-      });
-    }
-  }
+          button.innerHTML = originalText;
+        }, 2000);
+      })
+      .catch(err => console.error('Error al copiar:', err));
+  });
+});
 </script>
-
-
-
 </body>
 </html>
