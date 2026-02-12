@@ -334,19 +334,21 @@ Debes entregar ÚNICAMENTE:
 </button>
 
 <script>
-// Seleccionamos todos los botones con la clase 'btn-copy'
+// Función para todos los botones de copiar
 document.querySelectorAll('.btn-copy').forEach(button => {
   button.addEventListener('click', () => {
-    // Aquí defines el texto completo que quieres copiar
-    const fullText = `Eres un experto en análisis curricular y transformación de datos educativos. Tu tarea es procesar CUALQUIER documento PDF ... (todo el texto completo del prompt)`;
+    // Selecciona el contenedor padre de este botón
+    const parent = button.closest('.card');
+    const textElement = parent.querySelector('.prompt-text');
 
-    navigator.clipboard.writeText(fullText)
+    // Copia TODO el texto completo, no solo la parte visible
+    const textToCopy = textElement.innerText;
+
+    navigator.clipboard.writeText(textToCopy)
       .then(() => {
-        // Guardamos el texto original del botón
+        // Cambiamos el texto del botón temporalmente
         const originalText = button.innerHTML;
-        // Cambiamos el texto del botón
         button.innerHTML = 'Prompt copiado!';
-        // Volvemos al texto original después de 2 segundos
         setTimeout(() => {
           button.innerHTML = originalText;
         }, 2000);
